@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img">
+  <defs>
+    <radialGradient id="g" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#00ff66"/>
+      <stop offset="100%" stop-color="#0a0f0d"/>
+    </radialGradient>
+  </defs>
+  <circle cx="60" cy="60" r="56" fill="url(#g)" stroke="#0a0f0d" stroke-width="3"/>
+  <text x="60" y="72" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold"
+        text-anchor="middle" fill="#0a0f0d">AZ</text>
+</svg>

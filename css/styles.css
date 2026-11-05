@@ -1,0 +1,727 @@
+/* ==========================================================================
+   Omnitrix Codex — styles.css
+   CSS externo único (sem <style> inline), conforme requisito do trabalho.
+   ========================================================================== */
+
+/* ---------- 1. Variáveis / Design Tokens -------------------------------- */
+:root {
+  /* Paleta Sci-Fi Ben 10 (máx. de cores principais) */
+  --bg-primary: #0a0f0d;
+  --bg-card: #14211b;
+  --bg-card-alt: #101a15;
+  --green-omnitrix: #00ff66;
+  --green-dark: #0f5132;
+  --red-vilao: #ff3b3b;
+  --red-vilao-dark: #5c1010;
+  --text-light: #f0fdf4;
+  --text-muted: #94a3b8;
+
+  /* Tipografia */
+  --font-main: Arial, Helvetica, sans-serif;
+  --font-heading: "Trebuchet MS", Arial, sans-serif;
+
+  /* Espaçamento e bordas */
+  --border-radius: 10px;
+  --transition-speed: 0.3s;
+  --max-line-length: 68ch;
+}
+
+/* ---------- 2. Reset básico e corpo do documento ------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%; /* 16px */
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-light);
+  font-family: var(--font-main);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  line-height: 1.25;
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.75rem;
+  color: var(--green-omnitrix);
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+h4 {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+p {
+  max-width: var(--max-line-length);
+  margin: 0 0 1em 0;
+  text-align: left;
+}
+
+a {
+  color: var(--green-omnitrix);
+}
+
+ul {
+  padding-left: 1.2rem;
+}
+
+/* ---------- 3. Acessibilidade: skip-link e foco visível ------------------ */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--green-omnitrix);
+  color: #000;
+  padding: 0.75em 1.2em;
+  z-index: 100;
+  border-radius: 0 0 var(--border-radius) 0;
+  font-weight: bold;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+:focus-visible {
+  outline: 3px solid var(--green-omnitrix);
+  outline-offset: 3px;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ---------- 4. Cabeçalho e navegação -------------------------------------- */
+.header-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--green-dark);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.omnitrix-icon-img {
+  height: 1.8rem;
+  width: auto;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-light);
+  padding: 0.35em 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--transition-speed), color var(--transition-speed);
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: var(--green-omnitrix);
+  border-color: var(--green-omnitrix);
+}
+
+.nav-link.active {
+  color: var(--green-omnitrix);
+  border-color: var(--green-omnitrix);
+  font-weight: bold;
+}
+
+/* Secoes viram "paginas" trocadas via menu (ver js/navegacao.js) em vez
+   de ficarem todas empilhadas para rolagem continua. */
+.page-section {
+  outline: none;
+}
+
+/* ---------- 5. Seção Hero / Introdução ------------------------------------ */
+.hero-section {
+  padding: 2.5rem 1.25rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.hero-conteudo {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.hero-texto {
+  max-width: 640px;
+}
+
+.hero-imagem {
+  max-width: 340px;
+  width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+}
+
+@media screen and (min-width: 768px) {
+  .hero-conteudo {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-imagem {
+    max-width: 380px;
+    flex-shrink: 0;
+  }
+}
+
+.secao-intro {
+  color: var(--text-muted);
+}
+
+/* ---------- 6. Cards de personagens (Grid) -------------------------------- */
+.cards-section {
+  padding: 2rem 1.25rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.grid-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.card-personagem {
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 1.25rem;
+  border: 1px solid var(--green-dark);
+  transition: transform var(--transition-speed), border-color var(--transition-speed);
+}
+
+.card-personagem:hover,
+.card-personagem:focus-within {
+  transform: translateY(-4px);
+  border-color: var(--green-omnitrix);
+}
+
+.card-personagem figure {
+  margin: 0 0 0.75rem 0;
+  text-align: center;
+}
+
+.card-personagem figcaption {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+}
+
+.card-personagem figure img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+/* Fotos reais dos personagens (PNG com fundo transparente):
+   nao usamos recorte circular para nao cortar cabeca/pes da arte. */
+.card-personagem figure img.foto-personagem {
+  border-radius: 0;
+  height: 160px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Cards de vilões: mesma base dos cards de personagem, com
+   destaque em vermelho na borda para diferenciar heróis/aliados de antagonistas. */
+.card-vilao {
+  border-color: var(--red-vilao-dark);
+}
+
+.card-vilao:hover,
+.card-vilao:focus-within {
+  border-color: var(--red-vilao);
+}
+
+/* Subtítulo "Vilões principais" dentro da seção unificada de Personagens */
+.viloes-subtitulo {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--green-dark);
+}
+
+/* Kevin Levin possui duas imagens (primeira e segunda mutação)
+   exibidas lado a lado dentro da mesma figura. */
+.figure-dupla {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.figure-dupla img.foto-personagem {
+  height: 140px;
+}
+
+/* Fotos reais de aliens dentro do pop-up de detalhes. */
+.alien-figure img.foto-alien {
+  display: block;
+  margin: 0 auto;
+  height: 160px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+/* ---------- 7. Hub Omnitrix / seletor de eras ----------------------------- */
+.omnitrix-section {
+  padding: 2rem 1.25rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.era-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn-era {
+  background-color: var(--bg-card);
+  color: var(--text-light);
+  border: 1px solid var(--green-dark);
+  border-radius: var(--border-radius);
+  padding: 0.6em 1em;
+  font-size: 0.95rem;
+  transition: background-color var(--transition-speed), border-color var(--transition-speed);
+}
+
+.btn-era:hover {
+  border-color: var(--green-omnitrix);
+}
+
+.btn-era.active {
+  background-color: var(--green-dark);
+  border-color: var(--green-omnitrix);
+  color: var(--text-light);
+  font-weight: bold;
+}
+
+/* ---------- 8. Layout do painel (mobile-first) ---------------------------- */
+.display-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dial-column {
+  background-color: var(--bg-card-alt);
+  border-radius: var(--border-radius);
+  padding: 1.25rem;
+  border: 1px solid var(--green-dark);
+}
+
+.omnitrix-meta-topo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.omnitrix-imagem {
+  width: 4.5rem;
+  height: 4.5rem;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px rgba(0, 255, 102, 0.25));
+}
+
+.omnitrix-meta-topo h3 {
+  margin-bottom: 0.15rem;
+}
+
+.omnitrix-meta p {
+  color: var(--text-muted);
+}
+
+.omnitrix-ano-linha {
+  color: var(--green-omnitrix);
+  font-weight: bold;
+}
+
+/* ---------- 9. Disco giratório do Omnitrix -------------------------------- */
+.dial-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.btn-dial-nav {
+  background-color: var(--bg-card);
+  color: var(--green-omnitrix);
+  border: 1px solid var(--green-dark);
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: border-color var(--transition-speed), background-color var(--transition-speed);
+}
+
+.btn-dial-nav:hover {
+  border-color: var(--green-omnitrix);
+  background-color: var(--green-dark);
+}
+
+.omnitrix-dial {
+  position: relative;
+  width: 13rem;
+  height: 13rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: radial-gradient(circle at center, #05100a 0%, #000 70%);
+  border: 4px solid var(--dial-color-secondary, var(--green-dark));
+  box-shadow: 0 0 0 6px #000, 0 0 25px rgba(0, 255, 102, 0.25);
+}
+
+.dial-outer-ring {
+  position: absolute;
+  inset: 0.5rem;
+  border-radius: 50%;
+  border: 1px dashed rgba(148, 163, 184, 0.35);
+}
+
+.dial-ring {
+  position: absolute;
+  inset: 0;
+}
+
+.dial-marker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background-color: var(--dial-color-primary, var(--green-omnitrix));
+  box-shadow: 0 0 8px var(--dial-color-primary, var(--green-omnitrix));
+  transform: rotate(var(--marker-angle)) translate(5.1rem) rotate(calc(-1 * var(--marker-angle)));
+  margin: -0.35rem;
+}
+
+.dial-face {
+  position: relative;
+  width: 7.2rem;
+  height: 7.2rem;
+  border-radius: 50%;
+  background-color: var(--dial-color-secondary, #1c1c1c);
+  border: 3px solid var(--dial-color-primary, var(--green-omnitrix));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.dial-symbol {
+  font-size: 1.8rem;
+  color: var(--dial-color-primary, var(--green-omnitrix));
+}
+
+.dial-symbol-img {
+  width: 5.6rem;
+  height: 5.6rem;
+  object-fit: contain;
+}
+
+.dial-current-alien {
+  position: absolute;
+  bottom: -2.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  white-space: nowrap;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: var(--text-light);
+  background-color: var(--bg-card);
+  padding: 0.35em 0.9em;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--green-omnitrix);
+  transition: background-color var(--transition-speed), transform 0.15s ease;
+}
+
+.dial-current-alien:hover {
+  background-color: var(--green-dark);
+}
+
+.dial-current-alien:active {
+  transform: translateX(-50%) scale(0.97);
+}
+
+.omnitrix-dial:focus-visible {
+  outline-offset: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dial-ring,
+  .card-personagem {
+    transition: none !important;
+  }
+}
+
+.btn-mute {
+  display: block;
+  margin: 2.5rem auto 0;
+  background-color: var(--bg-card);
+  color: var(--text-light);
+  border: 1px solid var(--green-dark);
+  border-radius: var(--border-radius);
+  padding: 0.5em 1em;
+}
+
+.btn-mute:hover {
+  border-color: var(--green-omnitrix);
+}
+
+/* ---------- 10. Lista acessível de aliens e card de detalhes -------------- */
+.alien-list-aside {
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--green-dark);
+  padding: 1.25rem;
+}
+
+.lista-aliens-dica {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.alien-buttons-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.4rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 26rem;
+  overflow-y: auto;
+}
+
+.btn-alien {
+  width: 100%;
+  text-align: left;
+  background-color: var(--bg-card-alt);
+  color: var(--text-light);
+  border: 1px solid var(--green-dark);
+  border-radius: var(--border-radius);
+  padding: 0.6em 0.9em;
+  transition: background-color var(--transition-speed), border-color var(--transition-speed);
+}
+
+.btn-alien:hover {
+  border-color: var(--green-omnitrix);
+}
+
+.btn-alien.active {
+  background-color: var(--green-dark);
+  border-color: var(--green-omnitrix);
+  font-weight: bold;
+}
+
+/* ---------- 10b. Pop-up (dialog) de detalhes do alien --------------------- */
+.alien-modal {
+  background-color: var(--bg-card);
+  color: var(--text-light);
+  border: 1px solid var(--green-omnitrix);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  max-width: 32rem;
+  width: min(90vw, 32rem);
+  box-shadow: 0 0 40px rgba(0, 255, 102, 0.2);
+}
+
+.alien-modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.btn-modal-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background-color: var(--bg-card-alt);
+  color: var(--text-light);
+  border: 1px solid var(--green-dark);
+  border-radius: 50%;
+  width: 2.2rem;
+  height: 2.2rem;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.btn-modal-close:hover {
+  border-color: var(--green-omnitrix);
+}
+
+.modal-conteudo {
+  margin-top: 0.5rem;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.badge-especie {
+  background-color: var(--green-dark);
+  color: var(--text-light);
+  border-radius: var(--border-radius);
+  padding: 0.25em 0.75em;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  text-align: center;
+}
+
+.details-info {
+  text-align: left;
+  width: 100%;
+}
+
+.details-info p {
+  max-width: none;
+}
+
+/* ---------- 11. Rodapé ------------------------------------------------------ */
+.footer-main {
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+  color: var(--text-muted);
+  border-top: 1px solid var(--green-dark);
+  font-size: 0.85rem;
+}
+
+.footer-main p {
+  max-width: none;
+  margin: 0.25rem 0;
+}
+
+/* ==========================================================================
+   Breakpoints (mobile-first)
+   ========================================================================== */
+
+/* Tablet: 768px a 1024px */
+@media screen and (min-width: 768px) {
+  .header-main {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .grid-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .display-panel {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    grid-template-areas: "dial lista";
+    align-items: start;
+  }
+
+  .dial-column {
+    grid-area: dial;
+  }
+
+  .alien-list-aside {
+    grid-area: lista;
+  }
+
+  .card-body {
+    flex-direction: row;
+    text-align: left;
+    align-items: flex-start;
+  }
+}
+
+/* Desktop: acima de 1024px */
+@media screen and (min-width: 1024px) {
+  .grid-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Cards de vilões tem mais texto que os de personagem: 3 colunas
+     (em vez das 4 do grid padrão) mantêm a leitura confortável. */
+  .grid-cards-viloes {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hero-section {
+    padding: 4rem 2rem;
+  }
+
+  .display-panel {
+    grid-template-columns: 1fr 320px;
+  }
+}
