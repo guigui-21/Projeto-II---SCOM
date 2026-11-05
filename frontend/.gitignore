@@ -1,0 +1,14 @@
+# Configuração local e segredos
+backend/.env
+
+# Logs e dados de execução
+backend/logs/*.log
+backend/storage/*.json
+
+# Dependências (Composer)
+backend/vendor/
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+.vscode/
