@@ -1,0 +1,25 @@
+# Apache (XAMPP): todas as rotas /api/... são enviadas para o index.php
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Bloqueia acesso direto a código, configuração, logs e testes
+    RewriteRule ^(src|config|tests|logs|storage|vendor)(/|$) - [F,L]
+
+    # Demais URLs que não são arquivos/pastas reais -> front controller
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+# Nunca servir o .env, arquivos de log, JSON de controle, composer e testes
+<FilesMatch "^(\.env.*|composer\.(json|lock)|phpunit\.xml|.*\.log)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
