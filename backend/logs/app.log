@@ -1,0 +1,6 @@
+[2026-11-09 06:15:22] [INFO] Login bem-sucedido: admin@email.com (IP: 127.0.0.1)
+[2026-11-09 06:30:10] [WARNING] Tentativa de login falhada: admin@email.com (IP: 127.0.0.1)
+[2026-11-09 06:30:15] [WARNING] Loginbloqueado: Excesso de tentativas para admin@email.com (IP: 127.0.0.1)
+[2026-11-09 06:45:00] [INFO] Novo alien criado com sucesso: ID 64 (Usuário ID: 1)
+[2026-11-09 06:50:12] [WARNING] Acesso negado: Token CSRF inválido ou ausente (IP: 127.0.0.1)
+[2026-11-09 07:00:05] [ERROR] Erro interno no servidor: Conexão com a base de dados falhou
