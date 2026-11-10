@@ -8,6 +8,7 @@ use App\Core\RateLimiter;
 use App\Core\Request;
 use App\Core\Response;
 use App\Core\Session;
+use App\Core\Validator;
 use App\Middleware\AuthMiddleware;
 use App\Models\UsuarioModel;
 
@@ -21,14 +22,16 @@ class AuthController
     private $logger;
     private $limiter;
     private $auth;
+    private $registerLimiter;
 
-    public function __construct(UsuarioModel $usuarios, Session $session, Logger $logger, RateLimiter $limiter, AuthMiddleware $auth)
+    public function __construct(UsuarioModel $usuarios, Session $session, Logger $logger, RateLimiter $limiter, AuthMiddleware $auth, RateLimiter $registerLimiter)
     {
         $this->usuarios = $usuarios;
         $this->session = $session;
         $this->logger = $logger;
         $this->limiter = $limiter;
         $this->auth = $auth;
+        $this->registerLimiter = $registerLimiter;
     }
 
     /** GET /api/me — usuário logado (ou null) + token CSRF da sessão. */
@@ -92,6 +95,57 @@ class AuthController
             'user' => AuthMiddleware::publicUser($user),
             'csrf_token' => $token,
         ));
+    }
+
+    /**
+     * POST /api/register — cria uma conta de VISITANTE (nome, e-mail e senha)
+     * e já inicia a sessão. A conta de administrador é única e existe apenas
+     * no banco (database.sql): não há como criar outra pela API.
+     */
+    public function register(Request $request, $params = array())
+    {
+        $this->auth->requireCsrf($request);
+
+        $chave = 'cadastro|' . $request->ip;
+        if ($this->registerLimiter->tooManyAttempts($chave)) {
+            $this->logger->warning('Cadastro bloqueado por excesso de tentativas (IP ' . $request->ip . ')');
+            throw new HttpException(429, 'Muitos cadastros em pouco tempo. Aguarde alguns minutos e tente novamente.');
+        }
+
+        list($data, $errors) = Validator::usuario($request->body);
+        if (count($errors) > 0) {
+            throw new HttpException(400, 'Dados de cadastro inválidos. Corrija os campos indicados.', $errors);
+        }
+
+        $duplicado = array('email' => 'Este e-mail já está cadastrado.');
+        if ($this->usuarios->findByEmail($data['email']) !== null) {
+            throw new HttpException(409, 'Este e-mail já está cadastrado.', $duplicado);
+        }
+
+        $hash = password_hash($data['senha'], PASSWORD_DEFAULT);
+        try {
+            // O perfil é fixo: toda conta cadastrada é "visitante" (qualquer "perfil" enviado é ignorado).
+            $id = $this->usuarios->create($data['nome'], $data['email'], $hash, 'visitante');
+        } catch (\PDOException $e) {
+            if ((string) $e->getCode() === '23000') {   // violação de UNIQUE (corrida entre dois cadastros)
+                throw new HttpException(409, 'Este e-mail já está cadastrado.', $duplicado);
+            }
+            throw $e;
+        }
+
+        $this->registerLimiter->hit($chave);
+
+        $user = $this->usuarios->findById($id);
+        $this->session->regenerate();
+        $this->session->set('user_id', (int) $user['id']);
+        $token = Csrf::rotate($this->session);
+
+        $this->logger->info('Novo usuário cadastrado: ' . $data['email'] . ' (perfil visitante)');
+
+        return Response::success(array(
+            'user' => AuthMiddleware::publicUser($user),
+            'csrf_token' => $token,
+        ), 201);
     }
 
     /** POST /api/logout */

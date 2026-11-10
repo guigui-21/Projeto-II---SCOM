@@ -68,7 +68,73 @@ class AlienController
         return Response::success($alien);
     }
 
+    /** POST /api/aliens */
+    public function store(Request $request, $params = array())
+    {
+        $user = $this->auth->requireRole(array('administrador'));
+        $this->auth->requireCsrf($request);
+
+        list($data, $errors) = Validator::alien($request->body);
+        $this->validarEra($data, $errors);
+        if (count($errors) > 0) {
+            throw new HttpException(400, 'Dados inválidos. Corrija os campos indicados.', $errors);
+        }
+
+        $id = $this->aliens->create($data, $user['id']);
+        $this->logger->info("Alien '" . $data['nome'] . "' cadastrado com ID #" . $id . ' pelo usuário #' . $user['id']);
+
+        return Response::success($this->aliens->find($id), 201);
+    }
+
+    /** PUT /api/aliens/{id} */
+    public function update(Request $request, $params = array())
+    {
+        $user = $this->auth->requireRole(array('administrador'));
+        $this->auth->requireCsrf($request);
+
+        $id = $this->idParam($params);
+        if ($this->aliens->find($id) === null) {
+            throw new HttpException(404, 'Alien não encontrado.');
+        }
+
+        list($data, $errors) = Validator::alien($request->body);
+        $this->validarEra($data, $errors);
+        if (count($errors) > 0) {
+            throw new HttpException(400, 'Dados inválidos. Corrija os campos indicados.', $errors);
+        }
+
+        $this->aliens->update($id, $data);
+        $this->logger->info("Alien #" . $id . " ('" . $data['nome'] . "') atualizado pelo usuário #" . $user['id']);
+
+        return Response::success($this->aliens->find($id));
+    }
+
+    /** DELETE /api/aliens/{id} */
+    public function destroy(Request $request, $params = array())
+    {
+        $user = $this->auth->requireRole(array('administrador'));
+        $this->auth->requireCsrf($request);
+
+        $id = $this->idParam($params);
+        $alien = $this->aliens->find($id);
+        if ($alien === null) {
+            throw new HttpException(404, 'Alien não encontrado.');
+        }
+
+        $this->aliens->delete($id);
+        $this->logger->info("Alien #" . $id . " ('" . $alien['nome'] . "') excluído pelo usuário #" . $user['id']);
+
+        return Response::success(array('id' => $id, 'mensagem' => 'Alien excluído com sucesso.'));
+    }
+
     // ----- auxiliares ------------------------------------------------------
+
+    private function validarEra($data, &$errors)
+    {
+        if (isset($data['era_id']) && $this->eras->find($data['era_id']) === null) {
+            $errors['era_id'] = 'Era não encontrada.';
+        }
+    }
 
     private function idParam($params)
     {

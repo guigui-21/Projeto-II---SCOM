@@ -23,6 +23,21 @@ class UsuarioModel
         return $row ? $row : null;
     }
 
+    /** Insere um novo usuário (a senha já deve chegar como hash) e devolve o ID. */
+    public function create($nome, $email, $senhaHash, $perfil)
+    {
+        $stmt = $this->pdo->prepare(
+            'INSERT INTO usuarios (nome, email, senha, perfil) VALUES (:nome, :email, :senha, :perfil)'
+        );
+        $stmt->execute(array(
+            ':nome' => $nome,
+            ':email' => $email,
+            ':senha' => $senhaHash,
+            ':perfil' => $perfil,
+        ));
+        return (int) $this->pdo->lastInsertId();
+    }
+
     public function findById($id)
     {
         $stmt = $this->pdo->prepare('SELECT id, nome, email, senha, perfil FROM usuarios WHERE id = :id LIMIT 1');

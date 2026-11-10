@@ -52,8 +52,9 @@ try {
         $config['security']['login_max_attempts'],
         $config['security']['login_window']
     );
+    $registerLimiter = new RateLimiter($config['paths']['rate_limit_register'], 10, 600);
     $auth = new AuthMiddleware($session, $usuarios, $logger);
-    $authController = new AuthController($usuarios, $session, $logger, $limiter, $auth);
+    $authController = new AuthController($usuarios, $session, $logger, $limiter, $auth, $registerLimiter);
     $alienController = new AlienController($aliens, $eras, $auth, $logger);
     $eraController = new EraController($eras);
 
@@ -67,10 +68,14 @@ try {
     });
     $router->add('GET', '/api/me', array($authController, 'me'));
     $router->add('POST', '/api/login', array($authController, 'login'));
+    $router->add('POST', '/api/register', array($authController, 'register'));
     $router->add('POST', '/api/logout', array($authController, 'logout'));
     $router->add('GET', '/api/eras', array($eraController, 'index'));
     $router->add('GET', '/api/aliens', array($alienController, 'index'));
     $router->add('GET', '/api/aliens/{id}', array($alienController, 'show'));
+    $router->add('POST', '/api/aliens', array($alienController, 'store'));
+    $router->add('PUT', '/api/aliens/{id}', array($alienController, 'update'));
+    $router->add('DELETE', '/api/aliens/{id}', array($alienController, 'destroy'));
 
     $response = $router->dispatch($request);
 } catch (HttpException $e) {
