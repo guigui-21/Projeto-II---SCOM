@@ -1,0 +1,7 @@
+# Desenvolvimento: o navegador sempre confere se HTML/CSS/JS mudaram
+# (evita ficar usando uma versão antiga em cache depois de atualizar os arquivos).
+<IfModule mod_headers.c>
+    <FilesMatch "\.(html|css|js)$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+</IfModule>

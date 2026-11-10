@@ -208,6 +208,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let elementoQueAbriuModal = null;
 
   function abrirModalAlien(alien, elementoOrigem) {
+    const ehAdministrador = typeof Auth !== "undefined" && Auth.isAdministrador();
+    const acoesAdministrador = ehAdministrador
+      ? `<div class="modal-acoes">
+           <button type="button" class="btn-primario" data-acao="editar">Editar</button>
+           <button type="button" class="btn-perigo" data-acao="excluir">Excluir</button>
+         </div>`
+      : "";
+
     // Todo dado vindo da API passa por escaparHtml() antes de entrar no HTML.
     modalConteudo.innerHTML = `
       <div class="card-header">
@@ -230,8 +238,17 @@ document.addEventListener("DOMContentLoaded", () => {
             ${alien.habilidades.map((h) => `<li>${escaparHtml(h)}</li>`).join("")}
           </ul>
         </div>
+        ${acoesAdministrador}
       </div>
     `;
+
+    modalConteudo.querySelectorAll("[data-acao]").forEach((botao) => {
+      botao.addEventListener("click", () => {
+        const evento = botao.dataset.acao === "editar" ? "alien:editar" : "alien:excluir";
+        fecharModalAlien();
+        document.dispatchEvent(new CustomEvent(evento, { detail: alien.bruto }));
+      });
+    });
 
     elementoQueAbriuModal = elementoOrigem || null;
 
@@ -427,6 +444,11 @@ document.addEventListener("DOMContentLoaded", () => {
     OmnitrixSound.setEnabled(nowEnabled);
     btnMute.setAttribute("aria-pressed", nowEnabled ? "false" : "true");
     btnMute.textContent = nowEnabled ? "🔊 Som ligado" : "🔇 Som desligado";
+  });
+
+  // Quando o administrador cria, edita ou exclui um alien (administrador.js), recarrega os dados.
+  document.addEventListener("aliens:alterados", () => {
+    recarregar();
   });
 
   // --- Inicializacao -----------------------------------------------------
