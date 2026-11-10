@@ -1,6 +1,80 @@
-[2026-11-09 06:15:22] [INFO] Login bem-sucedido: admin@email.com (IP: 127.0.0.1)
-[2026-11-09 06:30:10] [WARNING] Tentativa de login falhada: admin@email.com (IP: 127.0.0.1)
-[2026-11-09 06:30:15] [WARNING] Loginbloqueado: Excesso de tentativas para admin@email.com (IP: 127.0.0.1)
-[2026-11-09 06:45:00] [INFO] Novo alien criado com sucesso: ID 64 (Usuário ID: 1)
-[2026-11-09 06:50:12] [WARNING] Acesso negado: Token CSRF inválido ou ausente (IP: 127.0.0.1)
-[2026-11-09 07:00:05] [ERROR] Erro interno no servidor: Conexão com a base de dados falhou
+[2026-10-18 16:21:32] [INFO] Logout: admnistrador@omnitrix.com
+[2026-10-18 16:22:16] [INFO] Login bem-sucedido: admnistrador@omnitrix.com
+[2026-10-18 21:54:00] [INFO] Logout: admnistrador@omnitrix.com
+[2026-10-20 19:02:28] [INFO] Login bem-sucedido: admnistrador@omnitrix.com
+[2026-10-20 19:02:45] [INFO] Logout: admnistrador@omnitrix.com
+[2026-10-20 19:03:03] [INFO] Novo usuário cadastrado: rocha.rodrigues@unesp.br (perfil visitante)
+[2026-10-20 19:03:17] [INFO] Logout: rocha.rodrigues@unesp.br
+[2026-11-09 02:12:19] [INFO] Login bem-sucedido: admnistrador@omnitrix.com
+[2026-11-09 02:34:53] [INFO] Logout: admnistrador@omnitrix.com
+[2026-11-09 02:35:18] [WARNING] Tentativa de login inválida: guilhermer.rodrigues4@gmail.com
+[2026-11-09 02:35:28] [WARNING] Tentativa de login inválida: rocha.rodrigues@unesp.br
+[2026-11-09 02:35:37] [WARNING] Tentativa de login inválida: rocha.rodrigues@unesp.br
+[2026-11-09 02:35:44] [WARNING] Tentativa de login inválida: rocha.rodrigues@unesp.br
+[2026-11-09 02:35:54] [WARNING] Tentativa de login inválida: rocha.rodrigues@unesp.br
+[2026-11-09 02:36:02] [WARNING] Tentativa de login inválida: guilhermer.rodrigues4@gmail.com
+[2026-11-09 02:36:06] [WARNING] Tentativa de login inválida: guilhermer.rodrigues4@gmail.com
+[2026-11-09 02:36:10] [WARNING] Tentativa de login inválida: guilhermer.rodrigues4@gmail.com
+[2026-11-09 02:36:29] [INFO] Novo usuário cadastrado: rocha.rodrigues@unesp.br (perfil visitante)
+[2026-11-09 02:36:51] [INFO] Logout: rocha.rodrigues@unesp.br
+[2026-11-09 02:37:06] [INFO] Login bem-sucedido: rocha.rodrigues@unesp.br
+[2026-11-09 02:40:30] [INFO] Logout: rocha.rodrigues@unesp.br
+[2026-11-09 02:40:50] [INFO] Login bem-sucedido: rocha.rodrigues@unesp.br
+[2026-11-09 02:50:48] [INFO] Logout: rocha.rodrigues@unesp.br
+[2026-11-09 02:50:53] [INFO] Login bem-sucedido: admnistrador@omnitrix.com
+[2026-11-09 04:34:58] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/aliens)
+[2026-11-09 04:35:03] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/aliens)
+[2026-11-09 04:35:12] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/aliens)
+[2026-11-09 04:35:45] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/aliens)
+[2026-11-09 04:53:57] [INFO] Alien 'Atômico X' cadastrado com ID #61 pelo usuário #1
+[2026-11-09 05:07:40] [INFO] Logout: admnistrador@omnitrix.com
+[2026-11-09 05:30:09] [INFO] Login bem-sucedido: rocha.rodrigues@unesp.br
+[2026-11-09 05:40:58] [WARNING] Acesso negado: usuário #2 (visitante) tentou uma ação restrita a administrador
+[2026-11-09 05:56:04] [INFO] Logout: rocha.rodrigues@unesp.br
+[2026-11-09 05:56:08] [INFO] Login bem-sucedido: admnistrador@omnitrix.com
+[2026-11-09 05:57:47] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/aliens)
+[2026-11-09 05:58:21] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/aliens)
+[2026-11-09 06:02:15] [INFO] Alien #61 ('Atômico X') excluído pelo usuário #1
+[2026-11-09 06:03:00] [INFO] Alien 'Atômico X' cadastrado com ID #62 pelo usuário #1
+[2026-11-09 06:05:14] [INFO] Alien #62 ('Atômico X') atualizado pelo usuário #1
+[2026-11-09 06:05:55] [INFO] Alien #62 ('Atômico X') excluído pelo usuário #1
+[2026-11-09 06:06:28] [INFO] Alien 'Atômico X' cadastrado com ID #63 pelo usuário #1
+[2026-11-09 06:08:03] [INFO] Alien 'Teste' cadastrado com ID #64 pelo usuário #1
+[2026-11-09 06:10:59] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/aliens)
+[2026-11-09 06:52:13] [INFO] Logout: admnistrador@omnitrix.com
+[2026-11-09 06:56:25] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:25] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:26] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:26] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:29] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:31] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:32] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:33] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:33] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:34] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:35] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:36] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:51] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:53] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:54] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:56] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:56:57] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:57:11] [WARNING] Token CSRF inválido ou ausente (IP ::1, rota POST /api/login)
+[2026-11-09 06:59:06] [INFO] Login bem-sucedido: admnistrador@omnitrix.com
+[2026-11-09 07:00:44] [INFO] Alien 'Atômico X' cadastrado com ID #65 pelo usuário #1
+[2026-11-09 07:02:32] [WARNING] Tentativa de login inválida: admin@email.com
+[2026-11-09 07:02:34] [WARNING] Tentativa de login inválida: admin@email.com
+[2026-11-09 07:02:35] [WARNING] Tentativa de login inválida: admin@email.com
+[2026-11-09 07:02:37] [WARNING] Tentativa de login inválida: admin@email.com
+[2026-11-09 07:02:38] [WARNING] Tentativa de login inválida: admin@email.com
+[2026-11-09 07:02:39] [WARNING] Login bloqueado por excesso de tentativas: admin@email.com (IP ::1)
+[2026-11-09 07:07:46] [INFO] Novo usuário cadastrado: perfil_forjado_teste@email.com (perfil visitante)
+[2026-11-09 21:45:52] [ERROR] RuntimeException: Falha de conexão PDO: SQLSTATE[HY000] [2002] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente em Database.php:28
+[2026-11-09 21:45:52] [ERROR] RuntimeException: Falha de conexão PDO: SQLSTATE[HY000] [2002] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente em Database.php:28
+[2026-11-09 21:45:53] [ERROR] RuntimeException: Falha de conexão PDO: SQLSTATE[HY000] [2002] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente em Database.php:28
+[2026-11-09 21:45:53] [ERROR] RuntimeException: Falha de conexão PDO: SQLSTATE[HY000] [2002] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente em Database.php:28
+[2026-11-09 21:45:54] [ERROR] RuntimeException: Falha de conexão PDO: SQLSTATE[HY000] [2002] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente em Database.php:28
+[2026-11-09 21:45:54] [ERROR] RuntimeException: Falha de conexão PDO: SQLSTATE[HY000] [2002] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente em Database.php:28
+[2026-11-09 21:45:55] [ERROR] RuntimeException: Falha de conexão PDO: SQLSTATE[HY000] [2002] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente em Database.php:28
+[2026-11-09 21:45:55] [ERROR] RuntimeException: Falha de conexão PDO: SQLSTATE[HY000] [2002] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente em Database.php:28
+[2026-11-09 21:46:00] [ERROR] RuntimeException: Falha de conexão PDO: SQLSTATE[HY000] [2002] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente em Database.php:28

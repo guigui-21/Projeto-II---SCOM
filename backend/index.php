@@ -8,7 +8,9 @@
 require __DIR__ . '/src/autoload.php';
 require __DIR__ . '/config/Database.php';
 
+use App\Controllers\AlienController;
 use App\Controllers\AuthController;
+use App\Controllers\EraController;
 use App\Core\Env;
 use App\Core\HttpException;
 use App\Core\Logger;
@@ -18,6 +20,8 @@ use App\Core\Response;
 use App\Core\Router;
 use App\Core\Session;
 use App\Middleware\AuthMiddleware;
+use App\Models\AlienModel;
+use App\Models\EraModel;
 use App\Models\UsuarioModel;
 
 Env::load(__DIR__ . '/.env');
@@ -39,6 +43,8 @@ try {
 
     // --- Models (acesso a dados) ---
     $usuarios = new UsuarioModel($pdo);
+    $eras = new EraModel($pdo);
+    $aliens = new AlienModel($pdo);
 
     // --- Middleware e Controllers ---
     $limiter = new RateLimiter(
@@ -48,6 +54,8 @@ try {
     );
     $auth = new AuthMiddleware($session, $usuarios, $logger);
     $authController = new AuthController($usuarios, $session, $logger, $limiter, $auth);
+    $alienController = new AlienController($aliens, $eras, $auth, $logger);
+    $eraController = new EraController($eras);
 
     // --- Rotas ---
     $router = new Router();
@@ -60,6 +68,9 @@ try {
     $router->add('GET', '/api/me', array($authController, 'me'));
     $router->add('POST', '/api/login', array($authController, 'login'));
     $router->add('POST', '/api/logout', array($authController, 'logout'));
+    $router->add('GET', '/api/eras', array($eraController, 'index'));
+    $router->add('GET', '/api/aliens', array($alienController, 'index'));
+    $router->add('GET', '/api/aliens/{id}', array($alienController, 'show'));
 
     $response = $router->dispatch($request);
 } catch (HttpException $e) {
