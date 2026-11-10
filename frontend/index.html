@@ -23,7 +23,16 @@
         <li><a href="#omnitrix" class="nav-link">Omnitrix</a></li>
       </ul>
     </nav>
+    <div class="auth-area">
+      <span id="auth-user" class="auth-user" hidden></span>
+      <button type="button" id="btn-login-open" class="btn-auth">Entrar</button>
+      <button type="button" id="btn-cadastro-open" class="btn-auth">Cadastrar-se</button>
+      <button type="button" id="btn-logout" class="btn-auth" hidden>Sair</button>
+    </div>
   </header>
+
+  <!-- Avisos de status (lidos por leitores de tela) -->
+  <p id="status-msg" class="status-msg" role="status" aria-live="polite" hidden></p>
 
   <main id="conteudo">
     <!-- Seção 1: Introdução -->
@@ -342,6 +351,11 @@
         para percorrer os aliens daquele Omnitrix. Cada giro emite um sinal sonoro, como no desenho.
       </p>
 
+      <div id="administrador-toolbar" class="administrador-toolbar" hidden>
+        <button type="button" id="btn-novo-alien" class="btn-primario">+ Adicionar novo alien</button>
+        <span class="nota-administrador">Você está como administrador: também pode editar e excluir aliens pelo pop-up de detalhes.</span>
+      </div>
+
       <div class="era-selector" role="tablist" aria-label="Escolha a era do Omnitrix">
         <button type="button" role="tab" aria-selected="true" id="tab-classico" data-era="classico"
           aria-controls="painel-omnitrix" class="btn-era active" tabindex="0">
@@ -434,6 +448,55 @@
     <p>Desenvolvido com HTML5 semântico, CSS3 e JavaScript puro (sem frameworks).</p>
   </footer>
 
+  <!-- Pop-up de login -->
+  <dialog id="login-modal" class="alien-modal" aria-labelledby="login-titulo">
+    <button type="button" id="btn-login-close" class="btn-modal-close" aria-label="Fechar janela de login">✕</button>
+    <h2 id="login-titulo" class="modal-titulo">Entrar</h2>
+    <form id="login-form" novalidate>
+      <div class="campo">
+        <label for="login-email">E-mail</label>
+        <input id="login-email" name="email" type="email" autocomplete="username" maxlength="150" required />
+      </div>
+      <div class="campo">
+        <label for="login-senha">Senha</label>
+        <div class="campo-senha">
+          <input id="login-senha" name="senha" type="password" autocomplete="current-password" maxlength="128" required />
+          <button type="button" class="btn-ver-senha" data-alvo="login-senha" aria-pressed="false" aria-label="Mostrar senha">Mostrar</button>
+        </div>
+      </div>
+      <div id="login-erro" class="form-erro" role="alert" hidden></div>
+      <button type="submit" id="login-enviar" class="btn-primario">Entrar</button>
+    </form>
+    <p class="troca-form">Ainda não tem conta? <button type="button" id="login-para-cadastro" class="link-botao">Cadastre-se</button></p>
+  </dialog>
+
+  <!-- Pop-up de cadastro de nova conta (sempre cria um visitante) -->
+  <dialog id="cadastro-modal" class="alien-modal" aria-labelledby="cadastro-titulo">
+    <button type="button" id="btn-cadastro-close" class="btn-modal-close" aria-label="Fechar janela de cadastro">✕</button>
+    <h2 id="cadastro-titulo" class="modal-titulo">Criar conta</h2>
+    <form id="cadastro-form" novalidate>
+      <div class="campo">
+        <label for="cad-nome">Nome</label>
+        <input id="cad-nome" name="nome" type="text" autocomplete="name" minlength="2" maxlength="100" required />
+      </div>
+      <div class="campo">
+        <label for="cad-email">E-mail</label>
+        <input id="cad-email" name="email" type="email" autocomplete="email" maxlength="150" required />
+      </div>
+      <div class="campo">
+        <label for="cad-senha">Senha</label>
+        <div class="campo-senha">
+          <input id="cad-senha" name="senha" type="password" autocomplete="new-password" minlength="8" maxlength="72" aria-describedby="cad-senha-dica" required />
+          <button type="button" class="btn-ver-senha" data-alvo="cad-senha" aria-pressed="false" aria-label="Mostrar senha">Mostrar</button>
+        </div>
+        <p id="cad-senha-dica" class="dica-campo">Mínimo de 8 caracteres, com pelo menos uma letra e um número.</p>
+      </div>
+      <div id="cadastro-erro" class="form-erro" role="alert" hidden></div>
+      <button type="submit" id="cadastro-enviar" class="btn-primario">Criar conta</button>
+    </form>
+    <p class="troca-form">Já tem conta? <button type="button" id="cadastro-para-login" class="link-botao">Entrar</button></p>
+  </dialog>
+
   <!-- Pop-up de detalhes do alien escolhido -->
   <dialog id="alien-modal" class="alien-modal" aria-labelledby="modal-alien-nome">
     <button type="button" id="btn-modal-close" class="btn-modal-close" aria-label="Fechar detalhes do alien">
@@ -462,9 +525,12 @@
     <source src="assets/audio/som_descarregou_omnitrix.m4a" type="audio/mp4" />
   </audio>
 
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/erasVisual.js"></script>
   <script src="js/sound.js"></script>
   <script src="js/navegacao.js"></script>
-  <script src="js/aliensData.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

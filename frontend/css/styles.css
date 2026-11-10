@@ -725,3 +725,223 @@ button {
     grid-template-columns: 1fr 320px;
   }
 }
+
+/* ==========================================================================
+   Projeto II — autenticação, formulários e área do administrador
+   ========================================================================== */
+
+[hidden] {
+  display: none !important;
+}
+
+.auth-area {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.auth-user {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.btn-auth,
+.btn-primario,
+.btn-perigo {
+  font-family: inherit;
+  font-size: 0.95rem;
+  border-radius: var(--border-radius);
+  padding: 0.5em 1.1em;
+  border: 1px solid var(--green-omnitrix);
+  cursor: pointer;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+.btn-auth {
+  background-color: transparent;
+  color: var(--green-omnitrix);
+}
+
+.btn-auth:hover {
+  background-color: var(--green-dark);
+  color: var(--text-light);
+}
+
+.btn-primario {
+  background-color: var(--green-omnitrix);
+  color: #04130a;
+  font-weight: bold;
+}
+
+.btn-primario:hover {
+  background-color: var(--text-light);
+}
+
+.btn-primario:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.btn-perigo {
+  background-color: transparent;
+  color: var(--red-vilao);
+  border-color: var(--red-vilao);
+}
+
+.btn-perigo:hover {
+  background-color: var(--red-vilao-dark);
+  color: var(--text-light);
+}
+
+.status-msg {
+  max-width: none;
+  margin: 0;
+  padding: 0.7rem 1.25rem;
+  background-color: var(--green-dark);
+  color: var(--text-light);
+  text-align: center;
+}
+
+.status-msg.erro {
+  background-color: var(--red-vilao-dark);
+  color: var(--text-light);
+}
+
+.administrador-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.nota-administrador {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.modal-titulo {
+  font-size: 1.3rem;
+  margin: 0 2rem 1rem 0;
+}
+
+.campo {
+  margin-bottom: 1rem;
+}
+
+.campo label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.92rem;
+  color: var(--text-light);
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text-light);
+  background-color: var(--bg-card-alt);
+  border: 1px solid var(--green-dark);
+  border-radius: var(--border-radius);
+  padding: 0.55em 0.7em;
+}
+
+.campo textarea {
+  resize: vertical;
+}
+
+.campo input:focus-visible,
+.campo select:focus-visible,
+.campo textarea:focus-visible {
+  border-color: var(--green-omnitrix);
+}
+
+.form-erro {
+  background-color: var(--red-vilao-dark);
+  border: 1px solid var(--red-vilao);
+  border-radius: var(--border-radius);
+  padding: 0.7rem 0.9rem;
+  margin-bottom: 1rem;
+  font-size: 0.92rem;
+}
+
+.form-erro ul {
+  margin: 0.4rem 0 0;
+}
+
+.modal-acoes {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.lista-aviso {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  max-width: none;
+}
+
+/* Formulário de cadastro: rolagem interna em telas baixas */
+#alien-form-modal {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Campo de senha com botão "Mostrar/Ocultar" */
+.campo-senha {
+  position: relative;
+}
+
+.campo-senha input {
+  padding-right: 5.6rem;
+}
+
+.btn-ver-senha {
+  position: absolute;
+  top: 50%;
+  right: 0.4rem;
+  transform: translateY(-50%);
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: var(--green-omnitrix);
+  background-color: var(--bg-card);
+  border: 1px solid var(--green-dark);
+  border-radius: var(--border-radius);
+  padding: 0.3em 0.8em;
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+}
+
+.btn-ver-senha:hover {
+  background-color: var(--green-dark);
+  color: var(--text-light);
+}
+
+.dica-campo {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.troca-form {
+  margin: 1.2rem 0 0;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.link-botao {
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--green-omnitrix);
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}

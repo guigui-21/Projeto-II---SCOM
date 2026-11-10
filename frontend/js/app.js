@@ -1,14 +1,18 @@
 /**
  * app.js
- * Camada de apresentacao/controle do Omnitrix Codex.
- * Le os dados de aliensData.js e manipula o DOM (padrao proximo de um
- * MVC simples: dados / logica de controle / marcacao HTML).
+ * Camada de apresentacao/controle do Omnitrix Codex (View + interacao).
+ *
+ * Projeto II: os dados dos aliens NAO ficam mais em um arquivo local. Eles sao
+ * buscados em tempo real na API REST (PHP + MySQL) via fetch() e entao
+ * renderizados no DOM. O visual de cada era vem de erasVisual.js.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
   const state = {
     currentEra: "classico",
     currentIndex: 0,
+    aliensPorEra: {},   // { classico: [alien, ...], alienForce: [...], ... }
+    erroCarga: null,    // mensagem de erro caso a API esteja indisponivel
   };
 
   // --- Referencias do DOM -------------------------------------------------
@@ -36,7 +40,77 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Utilidades ----------------------------------------------------------
   function getCurrentAliens() {
-    return aliensData[state.currentEra] || [];
+    return state.aliensPorEra[state.currentEra] || [];
+  }
+
+  // Escapa texto antes de inserir em innerHTML (previne XSS: os dados agora
+  // vem do banco e podem ter sido digitados por um usuario).
+  function escaparHtml(valor) {
+    return String(valor === null || valor === undefined ? "" : valor)
+      .replace(/&/g, "&")
+      .replace(/</g, "<")
+      .replace(/>/g, ">")
+      .replace(/"/g, """)
+      .replace(/'/g, "'");
+  }
+
+  // Converte o JSON da API para o formato usado pelas funcoes de renderizacao.
+  function normalizarAlien(a) {
+    return {
+      id: String(a.id),
+      nome: a.nome,
+      especie: a.especie,
+      planeta: a.planeta_origem,
+      habilidades: Array.isArray(a.habilidades) ? a.habilidades : [],
+      feito: a.descricao,
+      imagem: a.imagem_url || null,
+      imagemAlt: a.imagem_alt || "Ilustração do alienígena " + a.nome,
+      eraSlug: a.era_slug,
+      bruto: a, // objeto original da API (usado na edicao pelo administrador)
+    };
+  }
+
+  // --- Comunicacao com a API ------------------------------------------------
+  async function carregarAliens() {
+    const porEra = {};
+    let pagina = 1;
+    let totalPaginas = 1;
+
+    do {
+      const resposta = await Api.get(`/api/aliens?pagina=${pagina}&por_pagina=100`);
+      resposta.data.forEach((item) => {
+        const alien = normalizarAlien(item);
+        if (!porEra[alien.eraSlug]) porEra[alien.eraSlug] = [];
+        porEra[alien.eraSlug].push(alien);
+      });
+      totalPaginas = resposta.meta ? resposta.meta.total_paginas : 1;
+      pagina += 1;
+    } while (pagina <= totalPaginas);
+
+    state.aliensPorEra = porEra;
+  }
+
+  async function tentarCarregarAliens() {
+    try {
+      await carregarAliens();
+      state.erroCarga = null;
+    } catch (erro) {
+      state.aliensPorEra = {};
+      state.erroCarga = erro.message;
+    }
+  }
+
+  // Recarrega os dados mantendo a era e a posicao do disco (apos criar/editar/excluir).
+  async function recarregar() {
+    await tentarCarregarAliens();
+    const total = getCurrentAliens().length;
+    if (state.currentIndex >= total) {
+      state.currentIndex = Math.max(0, total - 1);
+    }
+    renderAlienButtons(state.currentEra);
+    renderDialMarkers(state.currentEra);
+    updateDialRotation(false);
+    updateAlienButtonsState();
   }
 
   // --- Renderizacao do painel do Omnitrix (dados da era) -------------------
@@ -56,7 +130,34 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Renderizacao da lista acessivel de aliens ----------------------------
   function renderAlienButtons(eraId) {
     alienList.innerHTML = "";
-    const aliens = aliensData[eraId] || [];
+    const aliens = state.aliensPorEra[eraId] || [];
+
+    if (state.erroCarga) {
+      const li = document.createElement("li");
+      const aviso = document.createElement("p");
+      aviso.setAttribute("role", "alert");
+      aviso.className = "lista-aviso";
+      aviso.textContent = state.erroCarga;
+      const retry = document.createElement("button");
+      retry.type = "button";
+      retry.className = "btn-alien";
+      retry.textContent = "Tentar novamente";
+      retry.addEventListener("click", () => {
+        recarregar();
+      });
+      li.appendChild(aviso);
+      li.appendChild(retry);
+      alienList.appendChild(li);
+      return;
+    }
+
+    if (!aliens.length) {
+      const li = document.createElement("li");
+      li.className = "lista-aviso";
+      li.textContent = "Nenhum alien cadastrado nesta era.";
+      alienList.appendChild(li);
+      return;
+    }
 
     aliens.forEach((alien, index) => {
       const li = document.createElement("li");
@@ -107,25 +208,26 @@ document.addEventListener("DOMContentLoaded", () => {
   let elementoQueAbriuModal = null;
 
   function abrirModalAlien(alien, elementoOrigem) {
+    // Todo dado vindo da API passa por escaparHtml() antes de entrar no HTML.
     modalConteudo.innerHTML = `
       <div class="card-header">
-        <h3 id="modal-alien-nome">${alien.nome}</h3>
-        <span class="badge-especie">${alien.especie}</span>
+        <h3 id="modal-alien-nome">${escaparHtml(alien.nome)}</h3>
+        <span class="badge-especie">${escaparHtml(alien.especie)}</span>
       </div>
       <div class="card-body">
         <div class="alien-figure" aria-hidden="true">
           ${
             alien.imagem
-              ? `<img src="${alien.imagem}" width="${alien.imagemW || 160}" height="${alien.imagemH || 160}" alt="${alien.imagemAlt || ""}" class="foto-alien" />`
+              ? `<img src="${escaparHtml(alien.imagem)}" width="150" height="150" alt="${escaparHtml(alien.imagemAlt)}" class="foto-alien" />`
               : buildAlienGlyph(alien.id)
           }
         </div>
         <div class="details-info">
-          <p><strong>Planeta de origem:</strong> ${alien.planeta}</p>
-          <p><strong>Feito marcante:</strong> ${alien.feito}</p>
+          <p><strong>Planeta de origem:</strong> ${escaparHtml(alien.planeta)}</p>
+          <p><strong>Feito marcante:</strong> ${escaparHtml(alien.feito)}</p>
           <h4>Habilidades principais</h4>
           <ul>
-            ${alien.habilidades.map((h) => `<li>${h}</li>`).join("")}
+            ${alien.habilidades.map((h) => `<li>${escaparHtml(h)}</li>`).join("")}
           </ul>
         </div>
       </div>
@@ -172,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Disco giratorio (visao de cima do Omnitrix) --------------------------
   function renderDialMarkers(eraId) {
-    const aliens = aliensData[eraId] || [];
+    const aliens = state.aliensPorEra[eraId] || [];
     const total = aliens.length;
     dialRing.innerHTML = "";
 
@@ -188,6 +290,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateDialRotation(animate) {
     const aliens = getCurrentAliens();
+
+    if (!aliens.length) {
+      dialRing.style.transition = "none";
+      dialRing.style.transform = "rotate(0deg)";
+      dialCurrentBtn.textContent = state.erroCarga ? "Indisponível" : "Nenhum alien";
+      dialCurrentBtn.disabled = true;
+      return;
+    }
+    dialCurrentBtn.disabled = false;
+
     const step = 360 / aliens.length;
     const targetDeg = -state.currentIndex * step;
 
@@ -215,6 +327,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function stepDial(direction) {
+    if (!getCurrentAliens().length) return;
     moverDial(state.currentIndex + direction);
     OmnitrixSound.playTroca();
   }
@@ -317,7 +430,17 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- Inicializacao -----------------------------------------------------
+  // 1) mostra o visual da era padrao; 2) busca os aliens na API; 3) renderiza.
   // tocarSom: false no carregamento inicial, pois navegadores bloqueiam
   // audio automatico sem uma interacao previa do usuario.
-  activateEra(state.currentEra, { tocarSom: false });
+  async function inicializar() {
+    renderOmnitrixInfo(state.currentEra);
+    dialCurrentBtn.textContent = "Carregando aliens...";
+    dialCurrentBtn.disabled = true;
+
+    await tentarCarregarAliens();
+    activateEra(state.currentEra, { tocarSom: false });
+  }
+
+  inicializar();
 });
