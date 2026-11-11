@@ -23,7 +23,7 @@ enciclopedia-aliens/
 │   └── index.php            front controller
 ├── frontend/                interface (View): index.html, css/, js/, assets/
 ├── docs/                    endpoints.md, arquitetura.md, seguranca-testes.md, checklist-requisitos.md, GIT.md,
-│                            relatorio/, evidencias/
+│                            evidencias/
 ├── database/migrations/     scripts SQL numerados para bancos já existentes
 ├── database.sql             script de criação + dados iniciais
 └── README.md
@@ -80,8 +80,6 @@ pare o MySQL no XAMPP e abra a página: aparecerá `[ERROR] ... Falha de conexã
 - API: `docs/endpoints.md` · Arquitetura: `docs/arquitetura.md`
 - Roteiro para gerar as evidências de segurança: `docs/seguranca-testes.md`
 - Mapeamento requisito → código: `docs/checklist-requisitos.md` · Plano de Git: `docs/GIT.md`
-- Relatório técnico (LaTeX, 14 capítulos): `docs/relatorio/relatorio-projeto-ii.tex` — cole no Overleaf e envie as imagens de evidência
-- Migrações de banco: `database/migrations/`
 
 ## Observação sobre este pacote
 O código PHP foi escrito sem acesso a um interpretador PHP durante a geração. Antes de entregar,
